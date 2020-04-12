@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TOB Simulator</title>
+    <script src='tob.js'></script>
+    <link rel="stylesheet" href="simstyle.css">
+
+  </head>
+  <body onload="splash()">
+    <div id="background">
+      <h2 id="title">Totally Ordered Broadcast - Banking Example</h2>
+      <div id="simulation">
+        <canvas id="canvas" width="1000" height="1000"></canvas>
+      </div>
+      <div id="control">
+        <form id="pform">
+          <h3>Select the number of sites:</h3>
+          <select id="numsites">
+            <option value=2>2 Sites</option>
+            <option value=3>3 Sites</option>
+            <option value=4>4 Sites</option>
+          </select> <br>
+        </form>
+        <form id="aform">
+          <h3>Select the algorithm to use in the simulation:</h3>
+          <input type="radio" id="pram" name="type" onclick="to_reset()" value=0>
+          <label for="P-RAM">Without Syncronization</label><br>
+          <input type="radio" id="tob" name="type" onclick="to_reset()" value=1>
+          <label for="TOB">With Syncronization</label><br>
+        </form>
+        <form id="sform">
+          <h3>Select the speed of the simulation:</h3>
+          <input type="radio" id="fast" name="speed" onclick="set_speed(7)" value=7>
+          <label for="fast">Fast</label><br>
+          <input type="radio" id="slow" name="speed" onclick="set_speed(20)" value=20>
+          <label for="slow">Slow</label><br>
+          <input type="radio" id="step" name="speed" onclick="set_speed(0)" value=0>
+          <label for="step">Step</label><br>
+        </form>
+        <br><button type="button" id="start_sim" onclick=start()>Start Simulation</button>
+        <button type="button" id="start_sim" onclick="stop()">Pause/Resume Simulation</button>
+        <br><button type="button" id="reset_sim" onClick="window.location.reload();">Reset Simulation</button>
+        <br><br>
+      </div>
+      <h3>How to use the simulator</h3>
+        <ol>
+          <li>Select the number of processes that you want to be present in the simulation.</li>
+          <li>Select whether to implement the Totally Ordered Broadcast Algorithm</li>
+          <li>Select the speed of the simulation, this can be changed after starting the animation but you have to click 'Pause/Resume Simulation' after changing from step to fast or slow.</li>
+          <li>To pause the simulation with fast or slow speeds click on 'Pause/Resume Simulation'.</li>
+          <li>To reset the simulation, click on 'Reset Simulation'.</li>
+        </ol>
+        <p>Note: Changing the synchronization during execution will reset the simulation</p>
+
+        <h3>About the Algorithm</h3>
+        <p>The purpose of this algorithm is to ensure updates between processes execute in the order they were sent in. The algorithm accomplishes this by making use of an array of Lamport Timestamps and priority queues within each process. The local time of each process updates according to the highest timestamp attached to an incoming message. When a process receives a message, it broadcasts to all other processes. As a result, the local times propagate across the network. Messages in the priority queue are executed one at a time for all that is less than the current local time.
+        </p>
+        <p>
+          <b>Pseudocode for sending an update U from process i:</b> <br>
+          &emsp;timestamp_array[i]++<br>
+          &emsp;broadcast(U, timestamp_array[i])
+          <br><br>
+          <b>Pseudocode for process i receiving an update from process j:</b> <br>
+          &emsp;timestamp_array[j] = msg_timestamp<br>
+          &emsp;queue.enqueue(msg, msg.msg_timestamp)<br>
+          &emsp;if msg_timestamp > timestamp_array[i]<br>
+          &emsp; &emsp;timestamp_array[i] = msg_timestamp <br>
+          &emsp; &emsp;broadcast(ack-msg, timestamp_array[i]) <br>
+          &emsp;end if
+          <br><br>
+          <b>Pseudocode for applying updates:</b> <br>
+          &emsp;(update, timestamp) = queue.head() <br>
+          &emsp;if (for all j, timestamp <= timestamp_array[j]))<br>
+          &emsp; &emsp;queue.dequeue() <br>
+          &emsp; &emsp;apply(update) <br>
+          &emsp;end if
+        </p>
+    </div>
+    
+  </body>
+</html>

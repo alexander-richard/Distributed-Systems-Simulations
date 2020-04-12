@@ -1,0 +1,38 @@
+  #background{
+    display: table;
+    width: 95%;
+  }
+
+  div{
+  float:left;
+  height:470px; 
+  width:23%;
+  padding:0 10px;
+  }
+
+  #simulation{ 
+  height: 600px;
+  width: 600px
+  } 
+
+  #canvas {
+    border-style: outset;
+    height: 600px;
+    width: 600px;
+  }
+
+  #control{ 
+  height: 800px;
+  width: 20%; 
+  margin: 20px;
+  } 
+
+  h2{ 
+  color: #000000; 
+  text-align:left; 
+  } 
+
+  h3{ 
+    color: #000000; 
+    text-align:left; 
+    } 

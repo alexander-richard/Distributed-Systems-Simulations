@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TS Based CS Simulator</title>
+    <script src='tscs.js'></script>
+    <link rel="stylesheet" href="simstyle.css">
+
+  </head>
+  <body onload="splash()">
+    <div id="background">
+      <h2 id="title">Timestamp Based Critical Section</h2>
+      <div id="simulation">
+        <canvas id="canvas" width="1000" height="1000"></canvas>
+      </div>
+      <div id="control">
+        <form id="pform">
+          <h4>Select the number of processes:</h4>
+          <select id="nump">
+            <option value=2>2 Processes</option>
+            <option value=3>3 Processes</option>
+            <option value=4>4 Processes</option>
+          </select> <br>
+        </form>
+        <form id="sform">
+          <h4>Select the speed of the simulation:</h4>
+          <input type="radio" id="fast" name="speed" onclick="set_speed(7)" value=1>
+          <label for="one">Fast</label><br>
+          <input type="radio" id="slow" name="speed" onclick="set_speed(20)" value=2>
+          <label for="two">Slow</label><br>
+          <input type="radio" id="step" name="speed" onclick="set_speed(0)" value=0>
+          <label for="three">Step</label><br>
+          
+        </form>
+        <br><button type="button" id="start_sim" onclick=start()>Start Simulation</button>
+        <button type="button" id="start_sim" onclick="stop()">Pause/Resume Simulation</button>
+        <br><button type="button" id="reset_sim" onClick="window.location.reload();">Reset Simulation</button>
+        <br><br>
+      </div>
+
+        <h3>How to use the simulator</h3>
+        <ol>
+          <li>Select the number of processes that you want to be present in the simulation.</li>
+          <li>Select the speed of the simulation, this can be changed after starting the animation but you have to click 'Pause/Resume Simulation' after changing from step to fast or slow.</li>
+          <li>To pause the simulation with fast or slow speeds click on 'Pause/Resume Simulation'.</li>
+          <li>To reset the simulation, click on 'Reset Simulation'.</li>
+        </ol>
+
+        <h3>About the Algorithm</h3>
+        <p>The purpose of this algorithm is to ensure that distributed processes do not access a shared resource (critical section) at the same time. This is accomplished by making use of Lamport Timestamps to assign every request a time value. Before a process enters the critical section, it waits on acknowledgments from every other process. Once finished, it lets all the other processes know that it is done, and they each remove that request from their queues; then, the next waiting process enters the critical section.
+        </p>
+        <p>
+          <b>Algorithm pseudocode:</b> <br>
+          Pi: (initially timestamp = 0)<br>
+          &emsp; on event e:<br>
+          &emsp;&emsp;case e is send(msg)<br>
+          &emsp;&emsp;&emsp;timestamp = timestamp + 1<br>
+          &emsp;&emsp;&emsp;msg.timestamp = timestamp<br>
+          &emsp;&emsp;case e is receive(msg)<br>
+          &emsp;&emsp;&emsp;timestamp = max(timstamp, msg.timestamp)<br>
+          &emsp;&emsp;&emsp;timstamp = timestamp + 1<br>
+          &emsp;&emsp;case e is any other event<br>
+          &emsp;&emsp;&emsp;timestamp = timestamp + 1<br>
+          &emsp;&emsp;e.timestamp = timestamp<br>
+        </p>
+      
+    </div>
+  </body>
+</html>
