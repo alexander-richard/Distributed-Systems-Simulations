@@ -670,10 +670,13 @@ async function tick() {
   var next_time = random_req();
   var next_req = random_req();
 
-  if (next_req < pnum) {
-    create_trans(next_req, next_time);
-    next_req = random_req();
+  for (var i = 0; i < pnum; i++) {
+    if (next_req < pnum) {
+      create_trans(next_req, next_time);
+      next_req = random_req();
+    }
   }
+  
 
   // check that a process has started a transaction in this turn
   var check_for_requests = false;

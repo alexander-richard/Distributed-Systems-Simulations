@@ -348,7 +348,6 @@ function sort_process_queue() {
  * the process on the other end.
  */
 function handle_channels() {
-  // sort the queue
   var dir;
 
   for ( i = 0; i < pnum; i++ ) {
@@ -511,8 +510,10 @@ async function tick() {
 
   var next_req = random_req();
   var next_time = random_req();
-  if (next_req < pnum) {
-    request_cs(next_req, next_time);
+  for (var i = 0; i < pnum; i++) {
+    if (next_req < pnum) {
+      request_cs(next_req, next_time);
+    }
   }
 
   // check that a process has started a transaction in this turn
